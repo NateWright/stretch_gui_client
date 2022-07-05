@@ -18,18 +18,12 @@ int main(int argc, char *argv[]) {
                 QCoreApplication::exit(-1);
         },
         Qt::QueuedConnection);
-
-
-    QSharedPointer<ServerReplica> ptr;  // shared pointer to hold source replica
-
-    QRemoteObjectNode repNode;                                                 // create remote object node
-    repNode.connectToNode(QUrl(QStringLiteral("tcp://192.168.86.157:9999")));  // connect with remote host node
-    // repNode.connectToNode(QUrl(QStringLiteral("local:switch")));
-    ptr.reset(repNode.acquire<ServerReplica>());  // acquire replica of source from host node
-    Client c(ptr);
+    QSharedPointer<ServerReplica> ptr;
+    QSharedPointer<QRemoteObjectNode> repNode;
+    repNode.reset(new QRemoteObjectNode());
+    Client c(ptr, repNode);
     engine.addImageProvider(QLatin1String("service"), c.getProvider().data());
     engine.rootContext()->setContextProperty("client", &c);
-    engine.rootContext()->setContextProperty("server", ptr.data());
     engine.rootContext()->setContextProperty("imgProvider", c.getProvider().data());
     engine.load(url);
 

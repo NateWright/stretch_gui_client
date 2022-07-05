@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QObject>
 #include <QSharedPointer>
+#include <QString>
 
 #include "PixmapProvider.hpp"
 #include "rep_Server_replica.h"
@@ -13,30 +14,21 @@ class Client : public QObject {
     Q_OBJECT
 
    public:
-    explicit Client(QSharedPointer<ServerReplica> ptr, QObject *parent = nullptr);
+    explicit Client(QSharedPointer<ServerReplica> ptr, QSharedPointer<QRemoteObjectNode> repNode, QObject *parent = nullptr);
     QSharedPointer<PixmapProvider> getProvider() const { return provider_; }
 
    private:
     QSharedPointer<ServerReplica> server_;
     QSharedPointer<PixmapProvider> provider_;
+    QSharedPointer<QRemoteObjectNode> repNode_;
 
     void initConnections();
 
    signals:
-    void ButtonToggleNavigationType();
-    void ButtonStop();
-    void ButtonSetHome();
-    void ButtonGoHome();
-    void ButtonGrasp();
+    void server(ServerReplica*);
 
 
-   private slots:
-//    void changeToPage1();
-//    void changeToPage2();
-//    void changeToPage3();
-//    void changeToPage4();
-//    void changeToPage5();
-//    void changeToPage6();
-//    void showButtonNavigateHome();
+   public slots:
+    void initiateServer(QString);
 };
 #endif  // CLIENT_HPP
