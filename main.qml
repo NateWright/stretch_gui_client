@@ -43,11 +43,44 @@ Window {
                     id: displayMap
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    property var press
+                    property var press: Qt.point(0,0)
                     property int imageVisible: 1
                     property string initialSource
+                    Layout.margins: 5
 
                     color: "transparent"
+
+                    // https://stackoverflow.com/questions/65803655/paint-arrow-with-qml
+                    Canvas {
+                      id: canvas
+                      anchors.fill: parent
+                      z: 5
+                      // Code to draw a simple arrow on TypeScript canvas got from https://stackoverflow.com/a/64756256/867349
+                      function arrow(context, fromx, fromy, tox, toy) {
+                        context.strokeStyle = "#FF00FF";
+                        context.lineWidth = 5;
+                        const dx = tox - fromx;
+                        const dy = toy - fromy;
+                        const headlen = Math.sqrt(dx * dx + dy * dy) * 0.3; // length of head in pixels
+                        const angle = Math.atan2(dy, dx);
+                        context.beginPath();
+                        context.moveTo(fromx, fromy);
+                        context.lineTo(tox, toy);
+                        context.stroke();
+                        context.beginPath();
+                        context.moveTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+                        context.lineTo(tox, toy );
+                        context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+                        context.stroke();
+                      }
+
+                      onPaint: {
+                        // Get the canvas context
+                        var ctx = getContext("2d");
+                        ctx.reset()
+                        arrow(ctx, displayMap.press.x, displayMap.press.y, ma.mouseX, ma.mouseY)
+                      }
+                    }
 
                     Image{
                         id: displayMapImage1
@@ -89,21 +122,21 @@ Window {
                         target: imgProvider
                         function onNewMap(num: uint){
                             displayMap.setSource("image://service/map" + num)
-//                            displayMap.source = "image://service/map" + num
                         }
                     }
 
                     MouseArea {
+                        id: ma
                         anchors.fill: parent
                         onPressed: (mouse)=> {
                             displayMap.press = Qt.point(mouse.x, mouse.y)
-                            server.uiDisplayMapMousePressInitiated(displayMap.press, Qt.size(parent.width, parent.height))
+                            canvas.visible = true
                         }
-                        onPositionChanged: (mouse)=> {
-                            server.uiDisplayMapMousePressCurrentLocation(Qt.point(mouse.x, mouse.y), Qt.size(parent.width, parent.height))
-                        }
+                        onMouseXChanged: canvas.requestPaint()
+                        onMouseYChanged: canvas.requestPaint()
                         onReleased: (mouse)=> {
                             server.uiDisplayMapMouseClick(displayMap.press, Qt.point(mouse.x, mouse.y), Qt.size(parent.width, parent.height))
+                            canvas.visible = false
                         }
                     }
                 }
@@ -111,6 +144,7 @@ Window {
             ColumnLayout{
                 id: page1column2
                 Layout.alignment: Qt.AlignRight
+                Layout.fillHeight: true
                 Layout.rightMargin: 5
                 Pane{
                     id: pleaseWait
@@ -132,14 +166,14 @@ Window {
                         }
                     }
                 }
-                Button{
-                    Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("Toggle Navigation Type")
-                    Material.background: Material.Green
-                    onClicked: {
-                        server.uiButtonToggleNavTypeClicked()
-                    }
-                }
+//                Button{
+//                    Layout.alignment: Qt.AlignHCenter
+//                    text: qsTr("Toggle Navigation Type")
+//                    Material.background: Material.Green
+//                    onClicked: {
+//                        server.uiButtonToggleNavTypeClicked()
+//                    }
+//                }
                 Button{
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("STOP")
@@ -194,6 +228,7 @@ Window {
             Layout.fillWidth: true
             ColumnLayout{
                 id: page2column1
+                Layout.margins: 5
                 Label{
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Please select Object")
@@ -396,6 +431,7 @@ Window {
             ColumnLayout{
                 id: page3column1
                 Layout.fillHeight: true
+                Layout.margins: 5
                 Label{
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Is this the correct object?")
@@ -492,6 +528,7 @@ Window {
                 id: page4column1
                 Layout.fillHeight: true
                 Layout.preferredWidth: parent.width / 2
+                Layout.margins: 5
 //                Layout.fillWidth: true
                 Label{
                     Layout.alignment: Qt.AlignHCenter
@@ -580,6 +617,7 @@ Window {
                         }
                     }
                 }
+
                 RowLayout {
                     Layout.alignment: Qt.AlignHCenter
                     Button {
@@ -603,8 +641,8 @@ Window {
                 }
                 Button {
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: page4column2.width/3
-                    Layout.preferredHeight: page4column2.height/4
+                    Layout.preferredWidth: parent.width/3
+                    Layout.preferredHeight: parent.height/4
                     text: qsTr("Back")
                     Material.background: Material.Red
                     onClicked: {
