@@ -2,6 +2,7 @@
 #define PIXMAPPROVIDER_HPP
 
 #include <QDebug>
+#include <QImage>
 #include <QQuickImageProvider>
 #include <regex>
 
