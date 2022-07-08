@@ -25,7 +25,9 @@ class Client : public QObject {
     void initConnections();
 
    signals:
-    void server(ServerReplica*);
+    void serverSuccess(ServerReplica*);
+    void serverFailure();
+    void disconnected();
 
 
    public slots:

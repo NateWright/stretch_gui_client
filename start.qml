@@ -7,37 +7,62 @@ ColumnLayout {
     id: startPage
     Layout.fillWidth: true
     Layout.fillHeight: true
-    Pane {
-        Layout.fillWidth: true
+    property alias errorConnectionVisible: errorConnection.visible
+    property alias errrorLostConnectionVisible: errorLostConnection.visible
 
-        Text {
-            id: label
-            text: qsTr("Please enter IP and Port")
+    Label {
+        id: label
+        Layout.fillWidth: true
+        text: qsTr("Please enter IP and Port")
+    }
+    Pane {
+        id: errorConnection
+        Layout.fillWidth: true
+        visible: false
+        Material.background: Material.Red
+
+        Label {
+            text: qsTr("Could not connect to this IP")
+        }
+    }
+    Pane {
+        id: errorLostConnection
+        Layout.fillWidth: true
+        visible: false
+        Material.background: Material.Red
+
+        Label {
+            text: qsTr("Lost connection to server")
         }
     }
     RowLayout{
-        Text {
+        Label {
             id: ipLabel
             text: qsTr("IP:")
         }
-        TextInput {
+        TextField {
+            focus: true
             id: ip
+            KeyNavigation.tab: port
             Layout.fillWidth: true
         }
     }
     RowLayout {
-        Text {
+        Label {
             id: portLabel
             text: qsTr("Port:")
         }
-        TextInput {
+        TextField {
             id: port
+            Material.background: Material.Grey
             Layout.fillWidth: true
+            KeyNavigation.tab: Button
         }
     }
 
     Button {
         text: qsTr("Submit")
+//        Material.background: Material.Green
 
         onClicked: {
             client.initiateServer(ip.text + ":" + port.text)

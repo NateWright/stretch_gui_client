@@ -6,13 +6,20 @@ Client::Client(QSharedPointer<ServerReplica> ptr, QSharedPointer<QRemoteObjectNo
 void Client::initiateServer(QString url){
     url = "tcp://" + url;
     qDebug() << "url: " << url;
-    repNode_->connectToNode(QUrl(url));  // connect with remote host node
+    repNode_->connectToNode(QUrl(url));
     server_.reset(repNode_->acquire<ServerReplica>());  // acquire replica of source from host node
-    emit server(server_.data());
+    if(!server_->waitForSource()){ // connect with remote host node
+        emit serverFailure();
+        server_.clear();
+        return;
+    }
+    emit serverSuccess(server_.data());
     initConnections();
 }
 
 void Client::initConnections() {
+
+    connect(server_.data(), &ServerReplica::stateChanged, this, [this](auto info){if(info == QRemoteObjectReplica::Suspect){ emit disconnected();}});
     // Page 1
 
     connect(server_.data(), &ServerReplica::newMap, provider_.data(), &PixmapProvider::setMap);

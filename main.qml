@@ -5,24 +5,28 @@ import QtQuick.Layouts
 
 // https://forum.qt.io/topic/42428/refreshing-remote-image-source-without-flickering-resp-empty-image-during-refresh
 
-Window {
+ApplicationWindow {
     id: appWindow
     visible: true
     property var server
     property var component
     property var sprite
+    Material.theme: Material.Light
 
         Connections {
             target: client
-            function onServer(obj) {
-                console.log("got it")
+            function onServerFailure() {
+                loader.item.errorConnectionVisible = true;
+            }
+
+            function onServerSuccess(obj) {
                 server = obj
-
-                sprite.destroy()
-
-                component = Qt.createComponent("pages.qml")
-                sprite = component.createObject(appWindow)
-
+                loader.setSource("pages.qml")
+            }
+            function onDisconnected() {
+                server = null
+                loader.setSource("start.qml")
+                loader.item.errrorLostConnectionVisible = true
             }
         }
         function createHomeScreen() {
@@ -30,6 +34,12 @@ Window {
             sprite = component.createObject(appWindow);
         }
 
-        Component.onCompleted: createHomeScreen();
+        Loader {
+            id: loader
+            source: "start.qml"
+            anchors.fill: parent
+            focus: true
+            anchors.margins: 5
+        }
 
 }
