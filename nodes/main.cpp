@@ -3,14 +3,14 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 
-#include "Client.hpp"
+#include "include/stretch_gui_client/Client.hpp"
 
 int main(int argc, char *argv[]) {
     QQuickStyle::setStyle("Material");
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    const QUrl url(u"qrc:/test/main.qml"_qs);
+    const QUrl url(u"qrc:/test/src/main.qml"_qs);
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated,
         &app, [url](QObject *obj, const QUrl &objUrl) {

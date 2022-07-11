@@ -1,11 +1,11 @@
-#include "Client.hpp"
+#include "include/stretch_gui_client/Client.hpp"
 
 Client::Client(QSharedPointer<ServerReplica> ptr, QSharedPointer<QRemoteObjectNode> repNode, QObject *parent) : QObject(parent), server_(ptr), repNode_(repNode), provider_(new ImageProvider()) {
 }
 
 void Client::initiateServer(QString url) {
     url = "tcp://" + url;
-    qDebug() << "url: " << url;
+//    qDebug() << "url: " << url;
     repNode_->connectToNode(QUrl(url));
     server_.reset(repNode_->acquire<ServerReplica>());  // acquire replica of source from host node
     if (!server_->waitForSource()) {                    // connect with remote host node

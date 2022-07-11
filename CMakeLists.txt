@@ -15,11 +15,11 @@ find_package(QT NAMES Qt6 REQUIRED COMPONENTS Quick QuickControls2 RemoteObjects
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick QuickControls2 RemoteObjects)
 
 set(PROJECT_SOURCES
-        main.cpp
-        ImageProvider.cpp
-        ImageProvider.hpp
-        Client.hpp
-        Client.cpp
+        nodes/main.cpp
+        src/ImageProvider.cpp
+        include/stretch_gui_client/ImageProvider.hpp
+        include/stretch_gui_client/Client.hpp
+        src/Client.cpp
 
 )
 
@@ -31,7 +31,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_qml_module(stretch_gui_client
     URI test
     VERSION 1.0
-    QML_FILES main.qml start.qml pages.qml
+    QML_FILES src/main.qml src/start.qml src/pages.qml
 )
 # Define target properties for Android with Qt 6 as:
     set_property(TARGET stretch_gui_client APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

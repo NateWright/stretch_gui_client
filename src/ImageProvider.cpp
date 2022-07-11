@@ -1,4 +1,4 @@
-#include "ImageProvider.hpp"
+#include "include/stretch_gui_client/ImageProvider.hpp"
 
 ImageProvider::ImageProvider() : QQuickImageProvider(QQuickImageProvider::Image) {
     mapRegex_ = std::regex("map");
