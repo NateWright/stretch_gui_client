@@ -7,6 +7,8 @@ import QtQuick.Layouts
 
 ApplicationWindow {
     id: appWindow
+    width: 1280
+    height: 720
     visible: true
     property var server
     property var component

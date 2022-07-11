@@ -141,48 +141,45 @@ StackLayout{
             id: page1column2
             Layout.alignment: Qt.AlignRight
             Layout.fillHeight: true
+            Layout.maximumWidth: parent.width / 3
             Layout.rightMargin: 5
             Pane{
                 id: pleaseWait
                 Material.elevation: 6
                 Material.background: Material.Red
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 opacity: 0
                 Label{
-                    text: qsTr("Please Wait for Robot to Move")
+                    anchors.centerIn: parent
+                    text: qsTr("Please Wait for\nRobot to Move")
                 }
                 Connections {
                     target: server
                     function onUiPleaseWaitSetVisible(b: Boolean){
-                        if(b){
-                            pleaseWait.opacity = 1
-                        }else{
-                            pleaseWait.opacity = 0
-                        }
+                        pleaseWait.opacity = b
                     }
                 }
             }
-//                Button{
-//                    Layout.alignment: Qt.AlignHCenter
-//                    text: qsTr("Toggle Navigation Type")
-//                    Material.background: Material.Green
-//                    onClicked: {
-//                        server.uiButtonToggleNavTypeClicked()
-//                    }
-//                }
             Button{
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 text: qsTr("STOP")
                 Material.background: Material.Red
                 onClicked: {
                     server.uiButtonStopClicked()
                 }
             }
-            Row{
+            RowLayout{
                 Layout.alignment: Qt.AlignHCenter
+                spacing: 2
                 Button{
                     text: qsTr("Set Home")
                     Material.background: Material.Green
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     onClicked: {
                         server.uiButtonSetHomeClicked()
                     }
@@ -191,6 +188,8 @@ StackLayout{
                     id: goHome
                     text: qsTr("Go Home")
                     Material.background: Material.Green
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     enabled: false
                     onClicked: {
                         server.uiButtonNavigateHomeClicked()
@@ -205,13 +204,22 @@ StackLayout{
                 }
             }
             Button{
+                id: beginGrasp
                 Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 text: qsTr("Begin Grasp")
                 Material.background: Material.Green
                 onClicked:{
                     server.uiButtonGraspClicked()
                     pages.changeToPage2()
 
+                }
+                Connections {
+                    target: server
+                    function onUiPleaseWaitSetVisible(b: Boolean){
+                        beginGrasp.enabled = !b
+                    }
                 }
             }
         }
@@ -225,6 +233,8 @@ StackLayout{
         ColumnLayout{
             id: page2column1
             Layout.margins: 5
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             Label{
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Please select Object")
@@ -325,7 +335,7 @@ StackLayout{
                 Layout.alignment: Qt.AlignHCenter
                 opacity: 0
                 Label{
-                    text: qsTr("Point out of Range")
+                    text: qsTr("Point out\nof Range")
                 }
                 Connections {
                     target: server
@@ -340,7 +350,7 @@ StackLayout{
                 Layout.alignment: Qt.AlignHCenter
                 opacity: 0
                 Label{
-                    text: qsTr("Please Select Another Point")
+                    text: qsTr("Please Select\nAnother Point")
                 }
                 Connections {
                     target: server
@@ -356,53 +366,76 @@ StackLayout{
             Layout.alignment: Qt.AlignRight
             Layout.rightMargin: 5
             Layout.fillHeight: true
+            Layout.maximumWidth: parent.width / 3
             Label{
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Move Camera")
             }
-            RowLayout{
-                Layout.alignment: Qt.AlignHCenter
+            GridLayout {
+                columns: 3
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
                 Button{
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     text: qsTr("Up")
                     onClicked: {
                         server.uiCameraMoveButtonUpClicked()
                     }
                 }
-            }
-            RowLayout{
-                Layout.alignment: Qt.AlignHCenter
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
                 Button{
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     text: qsTr("Left")
                     onClicked: {
                         server.uiCameraMoveButtonLeftClicked()
                     }
                 }
                 Button{
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     text: qsTr("Home")
                     onClicked: {
                         server.uiCameraMoveButtonHomeClicked()
                     }
                 }
                 Button{
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     text: qsTr("Right")
                     onClicked: {
                         server.uiCameraMoveButtonRightClicked()
                     }
                 }
-            }
-
-            RowLayout{
-                Layout.alignment: Qt.AlignHCenter
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
                 Button{
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     text: qsTr("Down")
                     onClicked: {
                         server.uiCameraMoveButtonDownClicked()
                     }
                 }
+                Item {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
             }
             Button{
                 Layout.alignment: Qt.AlignHCenter
                 Material.background: Material.Red
+                Layout.minimumHeight: Layout.minimumWidth
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 text: qsTr("Back")
                 onClicked:{
                     pages.changeToPage1()
@@ -492,14 +525,18 @@ StackLayout{
         ColumnLayout{
             id: page3column2
             Layout.fillHeight: true
+            Layout.maximumWidth: parent.width / 4
             Layout.alignment: Qt.AlignVCenter
             Layout.rightMargin: 5
             Label{
                 text: qsTr("Yes or No")
+                Layout.alignment: Qt.AlignHCenter
             }
             Button {
                 text: qsTr("Yes")
                 Material.background: Material.Green
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 onClicked: {
                     server.uiConfirmButtonYesClicked();
                     pages.changeToPage4()
@@ -508,6 +545,8 @@ StackLayout{
             Button {
                 text: qsTr("No")
                 Material.background: Material.Red
+                Layout.fillHeight: true
+                Layout.fillWidth: true
                 onClicked: {
                     server.uiConfirmButtonNoClicked();
                     pages.changeToPage2()
@@ -525,7 +564,6 @@ StackLayout{
             Layout.fillHeight: true
             Layout.preferredWidth: parent.width / 2
             Layout.margins: 5
-//                Layout.fillWidth: true
             Label{
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Stretch Grasping")
@@ -588,48 +626,44 @@ StackLayout{
         }
         ColumnLayout {
             id: page4column2
-            Layout.preferredHeight: parent.height
-            Layout.preferredWidth: parent.width / 2
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignRight
             Layout.rightMargin: 5
-            RowLayout {
-                Layout.alignment: Qt.AlignHCenter
+            GridLayout {
+                columns: 2
                 Button {
-                    Layout.preferredWidth: page4column2.width/3
-                    Layout.preferredHeight: page4column2.height/4
                     text: qsTr("Replace\nObject")
                     Material.background: Material.Green
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     onClicked: {
                         server.uiButtonReplaceObjectClicked()
                     }
                 }
                 Button {
-                    Layout.preferredWidth: page4column2.width/3
-                    Layout.preferredHeight: page4column2.height/4
-                    text: qsTr("Return\nHome")
-                    Material.background: Material.Green
-                    onClicked: {
-                        server.uiButtonReturnObjectClicked()
+                        text: qsTr("Return\nHome")
+                        Material.background: Material.Green
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        onClicked: {
+                            server.uiButtonReturnObjectClicked()
+                        }
                     }
-                }
-            }
-
-            RowLayout {
-                Layout.alignment: Qt.AlignHCenter
                 Button {
-                    Layout.preferredWidth: page4column2.width/3
-                    Layout.preferredHeight: page4column2.height/4
                     text: qsTr("Release\nObject")
                     Material.background: Material.Green
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     onClicked: {
                         server.uiButtonReleaseClicked()
                     }
                 }
                 Button {
-                    Layout.preferredWidth: page4column2.width/3
-                    Layout.preferredHeight: page4column2.height/4
                     text: qsTr("Navigate")
                     Material.background: Material.Green
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                     onClicked: {
                         server.uiButtonNavigateClicked()
                     }
@@ -637,10 +671,10 @@ StackLayout{
             }
             Button {
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: parent.width/3
-                Layout.preferredHeight: parent.height/4
                 text: qsTr("Back")
                 Material.background: Material.Red
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 onClicked: {
                     server.uiButtonBack_2Clicked()
                     pages.changeToPage3()
