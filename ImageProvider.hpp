@@ -1,15 +1,15 @@
-#ifndef PIXMAPPROVIDER_HPP
-#define PIXMAPPROVIDER_HPP
+#ifndef IMAGEPROVIDER_HPP
+#define IMAGEPROVIDER_HPP
 
 #include <QDebug>
 #include <QImage>
 #include <QQuickImageProvider>
 #include <regex>
 
-class PixmapProvider : public QQuickImageProvider {
+class ImageProvider : public QQuickImageProvider {
     Q_OBJECT
    public:
-    PixmapProvider();
+    ImageProvider();
 
     QImage requestImage(const QString &id, QSize *size, const QSize &requestedSize) override;
 
@@ -33,4 +33,4 @@ class PixmapProvider : public QQuickImageProvider {
     void setObjectFeed(QImage);
 };
 
-#endif  // PIXMAPPROVIDER_HPP
+#endif  // IMAGEPROVIDER_HPP

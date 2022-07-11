@@ -16,8 +16,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick QuickControls2 Remo
 
 set(PROJECT_SOURCES
         main.cpp
-        PixmapProvider.cpp
-        PixmapProvider.hpp
+        ImageProvider.cpp
+        ImageProvider.hpp
         Client.hpp
         Client.cpp
 

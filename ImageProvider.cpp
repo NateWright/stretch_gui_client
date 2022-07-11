@@ -1,6 +1,6 @@
-#include "PixmapProvider.hpp"
+#include "ImageProvider.hpp"
 
-PixmapProvider::PixmapProvider() : QQuickImageProvider(QQuickImageProvider::Image) {
+ImageProvider::ImageProvider() : QQuickImageProvider(QQuickImageProvider::Image) {
     mapRegex_ = std::regex("map");
     cameraFeedRegex_ = std::regex("cameraFeed");
     objectFeedRegex_ = std::regex("objectFeed");
@@ -10,7 +10,7 @@ PixmapProvider::PixmapProvider() : QQuickImageProvider(QQuickImageProvider::Imag
     objectFeedId_ = 0;
 }
 
-QImage PixmapProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize) {
+QImage ImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize) {
     //    qDebug() << "new request";
     if (std::regex_search(id.toStdString(), mapRegex_)) {
         return map_;
@@ -24,18 +24,18 @@ QImage PixmapProvider::requestImage(const QString &id, QSize *size, const QSize 
     return img;
 }
 
-void PixmapProvider::setMap(QImage q) {
+void ImageProvider::setMap(QImage q) {
     map_ = q;
     mapId_++;
     emit newMap(mapId_);
 }
 
-void PixmapProvider::setCameraFeed(QImage q) {
+void ImageProvider::setCameraFeed(QImage q) {
     cameraFeed_ = q;
     cameraFeedId_++;
     emit newCameraFeed(cameraFeedId_);
 }
-void PixmapProvider::setObjectFeed(QImage q) {
+void ImageProvider::setObjectFeed(QImage q) {
     objectFeed_ = q;
     objectFeedId_++;
     emit newObjectFeed(objectFeedId_);

@@ -7,7 +7,7 @@
 #include <QSharedPointer>
 #include <QString>
 
-#include "PixmapProvider.hpp"
+#include "ImageProvider.hpp"
 #include "rep_Server_replica.h"
 
 class Client : public QObject {
@@ -15,20 +15,19 @@ class Client : public QObject {
 
    public:
     explicit Client(QSharedPointer<ServerReplica> ptr, QSharedPointer<QRemoteObjectNode> repNode, QObject *parent = nullptr);
-    QSharedPointer<PixmapProvider> getProvider() const { return provider_; }
+    QSharedPointer<ImageProvider> getProvider() const { return provider_; }
 
    private:
     QSharedPointer<ServerReplica> server_;
-    QSharedPointer<PixmapProvider> provider_;
+    QSharedPointer<ImageProvider> provider_;
     QSharedPointer<QRemoteObjectNode> repNode_;
 
     void initConnections();
 
    signals:
-    void serverSuccess(ServerReplica*);
+    void serverSuccess(ServerReplica *);
     void serverFailure();
     void disconnected();
-
 
    public slots:
     void initiateServer(QString);
