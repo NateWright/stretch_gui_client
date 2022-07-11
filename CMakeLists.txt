@@ -52,7 +52,7 @@ else()
 endif()
 
 qt_add_repc_replicas(stretch_gui_client
-    Server.rep
+    include/stretch_gui_client/Server.rep
 )
 
 target_link_libraries(stretch_gui_client PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::RemoteObjects)
