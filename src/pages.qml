@@ -7,10 +7,38 @@ import QtQuick.Layouts
 StackLayout{
     id: pages
     anchors.fill:parent
-    currentIndex: 0
+
+    Component.onCompleted: () => {
+                               switch (server.pageNumber_){
+                                   case 0: {
+                                       pages.changeToPage1()
+                                       break;
+                                   }
+                                   case 1: {
+                                       pages.changeToPage2()
+                                       break;
+                                   }
+                                   case 2: {
+                                       pages.changeToPage3()
+                                       break;
+                                   }
+                                   case 3: {
+                                       pages.changeToPage4()
+                                       break;
+                                   }
+                                   case 4: {
+                                       pages.changeToPage5()
+                                       break;
+                                   }
+                               }
+                           }
+
+    currentIndex: server.pageNumber_
 
     function changeToPage1() {
         pages.currentIndex = 0
+        backToGrasp.visible = false
+        buttonGrasp.visible = true
     }
     function changeToPage2() {
         errorNanPoint.opacity = 0
@@ -23,6 +51,11 @@ StackLayout{
     }
     function changeToPage4() {
         pages.currentIndex = 3
+    }
+    function changeToPage5() {
+        pages.currentIndex = 0
+        backToGrasp.visible = true
+        buttonGrasp.visible = false
     }
 
     RowLayout{
@@ -222,6 +255,25 @@ StackLayout{
                     }
                 }
             }
+            Button{
+                id: backToGrasp
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                text: qsTr("Back")
+                Material.background: Material.Red
+                visible: false
+                onClicked:{
+                    changeToPage4()
+                    server.uiButtonBackToGraspClicked()
+                }
+                Connections {
+                    target: server
+                    function onUiPleaseWaitSetVisible(b: Boolean){
+                        beginGrasp.enabled = !b
+                    }
+                }
+            }
         }
     }
 
@@ -230,6 +282,7 @@ StackLayout{
         id: page2
         Layout.fillHeight: true
         Layout.fillWidth: true
+
         ColumnLayout{
             id: page2column1
             Layout.margins: 5
@@ -239,61 +292,11 @@ StackLayout{
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Please select Object")
             }
-            Rectangle{
+            ImageLoader {
                 id: cameraFeed1
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                property var press
-                property int imageVisible: 1
-                property string initialSource
-                property int fillmode: Image.PreserveAspectFit
-
-                color: "transparent"
-
-                Image{
-                    id: cameraFeed1Image1
-                    anchors.fill: parent
-                    fillMode: cameraFeed1.fillmode
-                    asynchronous: true
-                    visible: cameraFeed1.imageVisible === 1
-                    horizontalAlignment: Image.AlignLeft
-                }
-                Image{
-                    id: cameraFeed1Image2
-                    anchors.fill: parent
-                    fillMode: cameraFeed1.fillmode
-                    asynchronous: true
-                    visible: cameraFeed1.imageVisible === 2
-                    horizontalAlignment: Image.AlignLeft
-                }
-
-                function setSource(source){
-                    var imageNew = imageVisible === 1 ? cameraFeed1Image2 : cameraFeed1Image1;
-                    var imageOld = imageVisible === 2 ? cameraFeed1Image2 : cameraFeed1Image1;
-
-                    imageNew.source = source;
-
-                    function finishImage(){
-                        if(imageNew.status === Component.Ready) {
-                            imageNew.statusChanged.disconnect(finishImage);
-                            imageVisible = imageVisible === 1 ? 2 : 1;
-                        }
-                    }
-
-                    if (imageNew.status === Component.Loading){
-                        imageNew.statusChanged.connect(finishImage);
-                    }
-                    else {
-                        finishImage();
-                    }
-                }
-
-                Connections {
-                    target: imgProvider
-                    function onNewCameraFeed(num: uint){
-                        cameraFeed1.setSource("image://service/cameraFeed" + num)
-                    }
-                }
+                initialSource: "http://" + appWindow.ip +":8080/snapshot?topic=/stretch_gui/image"
 
                 MouseArea {
                     anchors.fill: parent
@@ -301,7 +304,7 @@ StackLayout{
                     onClicked: (mouse)=> {
                                    errorNanPoint.opacity = 0
                                    errorOutOfRange.opacity = 0
-                                   server.uiDisplayCameraMouseClicked(Qt.point(mouse.x, mouse.y), Qt.point(mouse.x, mouse.y), Qt.size(cameraFeed1Image1.paintedWidth, cameraFeed1Image1.paintedHeight))
+                                   server.uiDisplayCameraMouseClicked(Qt.point(mouse.x, mouse.y), Qt.point(mouse.x, mouse.y), Qt.size(cameraFeed1.paintedWidth, cameraFeed1.paintedHeight))
                                }
                 }
             }
@@ -568,60 +571,11 @@ StackLayout{
                 Layout.alignment: Qt.AlignHCenter
                 text: qsTr("Stretch Grasping")
             }
-            Rectangle{
+            ImageLoader {
                 id: cameraFeed2
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                property var press
-                property int imageVisible: 1
-                property string initialSource
-                property int fillmode: Image.PreserveAspectFit
-
-                color: "transparent"
-
-                Image{
-                    id: cameraFeed2Image1
-                    anchors.fill: parent
-                    fillMode: cameraFeed2.fillmode
-                    asynchronous: true
-                    visible: cameraFeed2.imageVisible === 1
-                    horizontalAlignment: Image.AlignLeft
-                }
-                Image{
-                    id: cameraFeed2Image2
-                    anchors.fill: parent
-                    fillMode: cameraFeed2.fillmode
-                    asynchronous: true
-                    visible: cameraFeed2.imageVisible === 2
-                    horizontalAlignment: Image.AlignLeft
-                }
-
-                function setSource(source){
-                    var imageNew = imageVisible === 1 ? cameraFeed2Image2 : cameraFeed2Image1;
-                    var imageOld = imageVisible === 2 ? cameraFeed2Image2 : cameraFeed2Image1;
-
-                    imageNew.source = source;
-
-                    function finishImage(){
-                        if(imageNew.status === Component.Ready) {
-                            imageNew.statusChanged.disconnect(finishImage);
-                            imageVisible = imageVisible === 1 ? 2 : 1;
-                        }
-                    }
-
-                    if (imageNew.status === Component.Loading){
-                        imageNew.statusChanged.connect(finishImage);
-                    }
-                    else {
-                        finishImage();
-                    }
-                }
-                Connections {
-                    target: imgProvider
-                    function onNewCameraFeed(num: uint){
-                        cameraFeed2.setSource("image://service/cameraFeed" + num)
-                    }
-                }
+                initialSource: "http://" + appWindow.ip +":8080/snapshot?topic=/stretch_gui/image"
             }
         }
         ColumnLayout {
@@ -666,6 +620,7 @@ StackLayout{
                     Layout.fillWidth: true
                     onClicked: {
                         server.uiButtonNavigateClicked()
+                        pages.changeToPage5()
                     }
                 }
             }

@@ -13,6 +13,7 @@ ApplicationWindow {
     property var server
     property var component
     property var sprite
+    property var ip
     Material.theme: Material.Light
 
         Connections {

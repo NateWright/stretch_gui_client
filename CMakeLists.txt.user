@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 7.0.2, 2022-07-11T15:01:39. -->
+<!-- Written by QtCreator 7.0.2, 2022-07-14T14:22:31. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
-  <value type="QByteArray">{038ae674-4533-488c-91cf-49c97a5d54bb}</value>
+  <value type="QByteArray">{46c5baa8-24c3-492d-8046-fb7b030d118c}</value>
  </data>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -70,14 +70,11 @@
    <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
-   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
-   <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
-   <value type="QString" key="ClangCodeModel.WarningConfigId">Builtin.BuildSystem</value>
    <valuemap type="QVariantMap" key="ClangTools">
     <value type="bool" key="ClangTools.AnalyzeOpenFiles">true</value>
     <value type="bool" key="ClangTools.BuildBeforeAnalysis">true</value>
     <value type="QString" key="ClangTools.DiagnosticConfig">Builtin.DefaultTidyAndClazy</value>
-    <value type="int" key="ClangTools.ParallelJobs">8</value>
+    <value type="int" key="ClangTools.ParallelJobs">6</value>
     <valuelist type="QVariantList" key="ClangTools.SelectedDirs"/>
     <valuelist type="QVariantList" key="ClangTools.SelectedFiles"/>
     <valuelist type="QVariantList" key="ClangTools.SuppressedDiagnostics"/>
@@ -91,7 +88,7 @@
    <value type="QString" key="DeviceType">Android.Device.Type</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Android Qt 6.3.1 Clang arm64-v8a</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Android Qt 6.3.1 Clang arm64-v8a</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{d040175b-1b24-402f-90a3-e6a427753c6d}</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{6b005c25-9919-4c0a-89dd-450d0516c772}</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="qlonglong" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
@@ -105,15 +102,15 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DANDROID_NATIVE_API_LEVEL:STRING=23
--DANDROID_NDK:PATH=/home/nwright/Android/Sdk/ndk/22.1.7171670
--DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/nwright/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
+-DANDROID_NDK:PATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670
+-DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
 -DANDROID_ABI:STRING=arm64-v8a
 -DANDROID_STL:STRING=c++_shared
 -DCMAKE_FIND_ROOT_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DQT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON
 -DQT_HOST_PATH:PATH=%{Qt:QT_HOST_PREFIX}
--DANDROID_SDK_ROOT:PATH=/home/nwright/Android/Sdk</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/nwright/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-Debug</value>
+-DANDROID_SDK_ROOT:PATH=/home/csrobot/Android/Sdk</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/csrobot/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
@@ -124,7 +121,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="QString" key="BuildTargetSdk">android-33</value>
+      <value type="QString" key="BuildTargetSdk">android-31</value>
       <value type="QString" key="KeystoreLocation"></value>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build Android APK</value>
@@ -168,15 +165,15 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DANDROID_NATIVE_API_LEVEL:STRING=23
--DANDROID_NDK:PATH=/home/nwright/Android/Sdk/ndk/22.1.7171670
--DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/nwright/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
+-DANDROID_NDK:PATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670
+-DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
 -DANDROID_ABI:STRING=arm64-v8a
 -DANDROID_STL:STRING=c++_shared
 -DCMAKE_FIND_ROOT_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DQT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON
 -DQT_HOST_PATH:PATH=%{Qt:QT_HOST_PREFIX}
--DANDROID_SDK_ROOT:PATH=/home/nwright/Android/Sdk</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/nwright/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-Release</value>
+-DANDROID_SDK_ROOT:PATH=/home/csrobot/Android/Sdk</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/csrobot/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
@@ -186,7 +183,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="QString" key="BuildTargetSdk">android-33</value>
+      <value type="QString" key="BuildTargetSdk">android-31</value>
       <value type="QString" key="KeystoreLocation"></value>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build Android APK</value>
@@ -229,15 +226,15 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DANDROID_NATIVE_API_LEVEL:STRING=23
--DANDROID_NDK:PATH=/home/nwright/Android/Sdk/ndk/22.1.7171670
--DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/nwright/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
+-DANDROID_NDK:PATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670
+-DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
 -DANDROID_ABI:STRING=arm64-v8a
 -DANDROID_STL:STRING=c++_shared
 -DCMAKE_FIND_ROOT_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DQT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON
 -DQT_HOST_PATH:PATH=%{Qt:QT_HOST_PREFIX}
--DANDROID_SDK_ROOT:PATH=/home/nwright/Android/Sdk</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/nwright/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-RelWithDebInfo</value>
+-DANDROID_SDK_ROOT:PATH=/home/csrobot/Android/Sdk</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/csrobot/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
@@ -247,7 +244,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="QString" key="BuildTargetSdk">android-33</value>
+      <value type="QString" key="BuildTargetSdk">android-31</value>
       <value type="QString" key="KeystoreLocation"></value>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build Android APK</value>
@@ -290,15 +287,15 @@
 -DCMAKE_C_COMPILER:FILEPATH=%{Compiler:Executable:C}
 -DCMAKE_CXX_COMPILER:FILEPATH=%{Compiler:Executable:Cxx}
 -DANDROID_NATIVE_API_LEVEL:STRING=23
--DANDROID_NDK:PATH=/home/nwright/Android/Sdk/ndk/22.1.7171670
--DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/nwright/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
+-DANDROID_NDK:PATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670
+-DCMAKE_TOOLCHAIN_FILE:FILEPATH=/home/csrobot/Android/Sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake
 -DANDROID_ABI:STRING=arm64-v8a
 -DANDROID_STL:STRING=c++_shared
 -DCMAKE_FIND_ROOT_PATH:PATH=%{Qt:QT_INSTALL_PREFIX}
 -DQT_NO_GLOBAL_APK_TARGET_PART_OF_ALL:BOOL=ON
 -DQT_HOST_PATH:PATH=%{Qt:QT_HOST_PREFIX}
--DANDROID_SDK_ROOT:PATH=/home/nwright/Android/Sdk</value>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/nwright/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-MinSizeRel</value>
+-DANDROID_SDK_ROOT:PATH=/home/csrobot/Android/Sdk</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/csrobot/android-dev/build-stretch_gui_client-Android_Qt_6_3_1_Clang_arm64_v8a-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
@@ -308,7 +305,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="QString" key="BuildTargetSdk">android-33</value>
+      <value type="QString" key="BuildTargetSdk">android-31</value>
       <value type="QString" key="KeystoreLocation"></value>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build Android APK</value>
@@ -359,10 +356,36 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.AndroidDeployConfiguration2</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings">
+    <valuelist type="QVariantList" key="AndroidDeviceAbis">
+     <value type="QString">arm64-v8a</value>
+     <value type="QString">armeabi-v7a</value>
+     <value type="QString">armeabi</value>
+    </valuelist>
+    <value type="QString" key="AndroidDeviceSerialNumber">53cc4a00</value>
+    <value type="int" key="AndroidVersion.ApiLevel">23</value>
+   </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
     <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
     <value type="bool" key="Analyzer.Valgrind.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.VisibleErrorKinds">
+     <value type="QString">0</value>
+     <value type="QString">1</value>
+     <value type="QString">2</value>
+     <value type="QString">3</value>
+     <value type="QString">4</value>
+     <value type="QString">5</value>
+     <value type="QString">6</value>
+     <value type="QString">7</value>
+     <value type="QString">8</value>
+     <value type="QString">9</value>
+     <value type="QString">10</value>
+     <value type="QString">11</value>
+     <value type="QString">12</value>
+     <value type="QString">13</value>
+     <value type="QString">14</value>
+    </valuelist>
     <valuelist type="QVariantList" key="Android.PostStartShellCmdListKey">
      <value type="QString"></value>
     </valuelist>

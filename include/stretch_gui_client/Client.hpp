@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
+#include <QThread>
 
 #include "ImageProvider.hpp"
 #include "rep_Server_replica.h"

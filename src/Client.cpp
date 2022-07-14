@@ -23,10 +23,6 @@ void Client::initConnections() {
 
     connect(server_.data(), &ServerReplica::newMap, provider_.data(), &ImageProvider::setMap);
 
-    // Page 2
-
-    connect(server_.data(), &ServerReplica::uiDisplayCameraSetCamera, provider_.data(), &ImageProvider::setCameraFeed);
-
     // Page 3
 
     connect(server_.data(), &ServerReplica::uiDisplayImageSetCamera, provider_.data(), &ImageProvider::setObjectFeed);  // Server to ui

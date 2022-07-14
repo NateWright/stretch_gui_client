@@ -65,6 +65,7 @@ ColumnLayout {
 //        Material.background: Material.Green
 
         onClicked: {
+            appWindow.ip = ip.text
             client.initiateServer(ip.text + ":" + port.text)
         }
     }
