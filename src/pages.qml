@@ -153,10 +153,21 @@ StackLayout{
                         displayMap.setSource("image://service/map" + num)
                     }
                 }
+                PinchHandler {
+                    id: pinch
+                    target: displayMap
+                    minimumPointCount: 2
+                    onActiveChanged: () => {
+                                         if(pinch.active){
+                                             canvas.visible = false
+                                         }
+                                     }
+                }
 
                 MouseArea {
                     id: ma
                     anchors.fill: parent
+                    enabled: !pinch.active
                     onPressed: (mouse)=> {
                         displayMap.press = Qt.point(mouse.x, mouse.y)
                         canvas.visible = true
