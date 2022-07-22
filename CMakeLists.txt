@@ -20,6 +20,7 @@ set(PROJECT_SOURCES
         include/stretch_gui_client/ImageProvider.hpp
         include/stretch_gui_client/Client.hpp
         src/Client.cpp
+        images.qrc
 
 )
 

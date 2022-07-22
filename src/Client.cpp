@@ -4,7 +4,7 @@ Client::Client(QSharedPointer<ServerReplica> ptr, QSharedPointer<QRemoteObjectNo
 }
 
 void Client::initiateServer(QString url) {
-    url = "tcp://" + url;
+    url = "tcp://" + url + ":stretch";
 //    qDebug() << "url: " << url;
     repNode_->connectToNode(QUrl(url));
     server_.reset(repNode_->acquire<ServerReplica>());  // acquire replica of source from host node
@@ -20,8 +20,6 @@ void Client::initiateServer(QString url) {
 void Client::initConnections() {
     connect(server_.data(), &ServerReplica::stateChanged, this, [this](auto info) {if(info == QRemoteObjectReplica::Suspect){ emit disconnected();} });
     // Page 1
-
-    connect(server_.data(), &ServerReplica::newMap, provider_.data(), &ImageProvider::setMap);
 
     // Page 3
 

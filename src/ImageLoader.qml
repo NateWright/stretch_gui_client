@@ -7,6 +7,9 @@ Rectangle{
     property int fillmode: Image.PreserveAspectFit
     property int paintedWidth: displayImage1.paintedWidth
     property int paintedHeight: displayImage1.paintedHeight
+    property int sourceWidth: 0
+    property int sourceHeight: 0
+    property bool pause: false
 
     color: "transparent"
 
@@ -42,6 +45,12 @@ Rectangle{
                 imageNew.statusChanged.disconnect(finishImage);
                 imageVisible = imageVisible === 1 ? 2 : 1;
                 imageOld.source = ""
+
+                if(sourceWidth !== imageNew.sourceSize.width){
+                    sourceWidth = imageNew.sourceSize.width
+                    sourceHeight = imageNew.sourceSize.height
+                }
+
                 done()
             }
         }
@@ -57,7 +66,17 @@ Rectangle{
     Connections {
         target: imageLoader
         function onDone() {
-            imageLoader.setSource(initialSource)
+            if(!pause){
+                imageLoader.setSource(initialSource)
+            }
         }
+    }
+
+    function pauseFeed() {
+        pause = true
+    }
+    function unpauseFeed() {
+        pause = false
+        imageLoader.setSource(initialSource)
     }
 }

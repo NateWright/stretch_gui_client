@@ -5,15 +5,19 @@ import QtQuick.Layouts
 
 ColumnLayout {
     id: startPage
-    Layout.fillWidth: true
-    Layout.fillHeight: true
+    anchors.fill: parent
     property alias errorConnectionVisible: errorConnection.visible
     property alias errrorLostConnectionVisible: errorLostConnection.visible
+
+    function submit() {
+        appWindow.ip = ip.text
+        client.initiateServer(ip.text)
+    }
 
     Label {
         id: label
         Layout.fillWidth: true
-        text: qsTr("Please enter IP and Port")
+        text: qsTr("Please enter IP for stretch")
     }
     Pane {
         id: errorConnection
@@ -43,31 +47,30 @@ ColumnLayout {
         TextField {
             focus: true
             id: ip
-            KeyNavigation.tab: port
-            Layout.fillWidth: true
-        }
-    }
-    RowLayout {
-        Label {
-            id: portLabel
-            text: qsTr("Port:")
-        }
-        TextField {
-            id: port
-            Material.background: Material.Grey
-            Layout.fillWidth: true
             KeyNavigation.tab: Button
+            Keys.onReturnPressed: startPage.submit()
+            Layout.fillWidth: true
         }
     }
+//    RowLayout {
+//        Label {
+//            id: portLabel
+//            text: qsTr("Port:")
+//        }
+//        TextField {
+//            id: port
+//            Material.background: Material.Grey
+//            Layout.fillWidth: true
+//            KeyNavigation.tab: Button
+//        }
+//    }
 
     Button {
+        Layout.alignment: Qt.AlignTop
         text: qsTr("Submit")
-//        Material.background: Material.Green
 
-        onClicked: {
-            appWindow.ip = ip.text
-            client.initiateServer(ip.text + ":" + port.text)
-        }
+        onClicked: startPage.submit()
+        Keys.onReturnPressed: startPage.submit()
     }
 
 }
