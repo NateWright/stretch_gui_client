@@ -7,12 +7,14 @@ import QtMultimedia 5.0
 // https://forum.qt.io/topic/42428/refreshing-remote-image-source-without-flickering-resp-empty-image-during-refresh
 
 ColumnLayout {
-    RowLayout {
+    RowLayout{
+        z: 5
         Button {
             id: cameraButton
             text: qsTr("Camera")
             onClicked: () => {
                            mainLayout.currentIndex = 0
+                           mainLayout.changeTitle()
                        }
         }
         Button {
@@ -21,7 +23,9 @@ ColumnLayout {
             onClicked: () => {
                            mainLayout.currentIndex = 1
                            server.changeToNavigation()
+                           mainLayout.changeTitle()
                        }
+            enabled: server.canNavigate_
         }
         Button {
             id: graspButton
@@ -29,6 +33,7 @@ ColumnLayout {
             onClicked: () => {
                            mainLayout.currentIndex = 2
                            server.uiGrasp()
+                           mainLayout.changeTitle()
                        }
             Connections {
                 target: server
@@ -36,7 +41,14 @@ ColumnLayout {
                     graspButton.enabled = !b
                 }
             }
-
+        }
+        Item {
+            Layout.fillWidth: true
+            Label {
+                id: info
+                anchors.centerIn: parent
+                text: qsTr("Click and Drag to Move Stretch")
+           }
         }
     }
 
@@ -45,25 +57,126 @@ ColumnLayout {
         currentIndex: 1
 
         Component.onCompleted: server.changeToNavigation()
+        function changeTitle() {
+            switch(mainLayout.currentIndex){
+            case 0: {
+                info.text = qsTr("")
+                break
+            }
+            case 1: {
+                info.text = qsTr("Click and Drag to Move Stretch")
+                break
+            }
+            case 2: {
+                switch(pages.currentIndex){
+                case 0: {
+                    info.text = qsTr("Please select Object")
+                    break
+                }
+                case 1: {
+                    info.text = qsTr("Is this the correct object?")
+                    break
+                }
+                case 2: {
+                    info.text = qsTr("Stretch Grasping")
+                    break
+                }
+                }
+                break
+            }
+
+            }
+        }
 
 
         // Camera
-        ImageLoader {
-            id: camera
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            initialSource: "http://" + appWindow.ip +":8080/snapshot?topic=/stretch_gui/image"
-            pause: true
+        RowLayout {
+            ImageLoader {
+                id: camera
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                initialSource: "http://" + appWindow.ip +":8080/snapshot?topic=/stretch_gui/image"
+                pause: true
 
-            Connections {
-                target: mainLayout
-                function onCurrentIndexChanged() {
-                                            if(mainLayout.currentIndex === 0){
-                                                camera.unpauseFeed()
-                                            } else {
-                                                camera.pauseFeed()
-                                            }
-                                       }
+                Connections {
+                    target: mainLayout
+                    function onCurrentIndexChanged() {
+                                                if(mainLayout.currentIndex === 0){
+                                                    camera.unpauseFeed()
+                                                } else {
+                                                    camera.pauseFeed()
+                                                }
+                                           }
+                }
+            }
+            ColumnLayout{
+                Layout.alignment: Qt.AlignRight
+                Layout.rightMargin: 5
+                Layout.fillHeight: true
+                Layout.maximumWidth: parent.width / 3
+                Label{
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Move Camera")
+                }
+                GridLayout {
+                    columns: 3
+                    Item {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                    }
+                    Button{
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        text: qsTr("Up")
+                        onClicked: {
+                            server.uiCameraMoveButtonUpClicked()
+                        }
+                    }
+                    Item {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                    }
+                    Button{
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        text: qsTr("Left")
+                        onClicked: {
+                            server.uiCameraMoveButtonLeftClicked()
+                        }
+                    }
+                    Button{
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        text: qsTr("Home")
+                        onClicked: {
+                            server.uiCameraMoveButtonHomeClicked()
+                        }
+                    }
+                    Button{
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        text: qsTr("Right")
+                        onClicked: {
+                            server.uiCameraMoveButtonRightClicked()
+                        }
+                    }
+                    Item {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                    }
+                    Button{
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        text: qsTr("Down")
+                        onClicked: {
+                            server.uiCameraMoveButtonDownClicked()
+                        }
+                    }
+                    Item {
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                    }
+                }
             }
         }
 
@@ -75,11 +188,6 @@ ColumnLayout {
 
             ColumnLayout{
                 id: page1column1
-                Label {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("Click a Point to Move Stretch")
-                }
-
                 ImageLoader {
                     id: map
                     Layout.fillHeight: true
@@ -89,6 +197,8 @@ ColumnLayout {
                     pause: false
                     fillmode: Image.Stretch
 
+                    property var robotPoint: Qt.point(0,0)
+                    property real robotRotation: 0.0
                     property var press: Qt.point(0,0)
 
                     // https://stackoverflow.com/questions/65803655/paint-arrow-with-qml
@@ -129,6 +239,9 @@ ColumnLayout {
                         fillMode: Image.Stretch
                         width: robot.sourceSize.width * (map.paintedWidth / map.sourceWidth) / 10
                         height: robot.sourceSize.height * (map.paintedHeight / map.sourceHeight) / 10
+                        x: map.robotPoint.x * (map.paintedWidth / map.sourceWidth)
+                        y: map.robotPoint.y * (map.paintedHeight / map.sourceHeight)
+                        rotation: -(map.robotRotation * 180 / Math.PI) - 90
                     }
 
                     Connections {
@@ -144,9 +257,11 @@ ColumnLayout {
                     Connections {
                         target: server
                         function onRobotPose(point, rotation) {
-                            robot.x = point.x * (map.paintedWidth / map.sourceWidth)
-                            robot.y = point.y * (map.paintedHeight / map.sourceHeight)
-                            robot.rotation = -(rotation * 180 / Math.PI) - 90
+//                            robot.x = point.x * (map.paintedWidth / map.sourceWidth)
+//                            robot.y = point.y * (map.paintedHeight / map.sourceHeight)
+//                            robot.rotation = -(rotation * 180 / Math.PI) - 90
+                            map.robotPoint = point
+                            map.robotRotation = rotation
                         }
                     }
                     PinchHandler {
@@ -176,118 +291,6 @@ ColumnLayout {
                         }
                     }
                 }
-//                Rectangle {
-//                    id: displayMap
-//                    Layout.fillHeight: true
-//                    Layout.fillWidth: true
-//                    property var press: Qt.point(0,0)
-//                    property int imageVisible: 1
-//                    property string initialSource
-//                    Layout.margins: 5
-
-//                    color: "transparent"
-
-//                    // https://stackoverflow.com/questions/65803655/paint-arrow-with-qml
-//                    Canvas {
-//                      id: canvas
-//                      anchors.fill: parent
-//                      z: 5
-//                      // Code to draw a simple arrow on TypeScript canvas got from https://stackoverflow.com/a/64756256/867349
-//                      function arrow(context, fromx, fromy, tox, toy) {
-//                        context.strokeStyle = "#FF00FF";
-//                        context.lineWidth = 5;
-//                        const dx = tox - fromx;
-//                        const dy = toy - fromy;
-//                        const headlen = Math.sqrt(dx * dx + dy * dy) * 0.3; // length of head in pixels
-//                        const angle = Math.atan2(dy, dx);
-//                        context.beginPath();
-//                        context.moveTo(fromx, fromy);
-//                        context.lineTo(tox, toy);
-//                        context.stroke();
-//                        context.beginPath();
-//                        context.moveTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-//                        context.lineTo(tox, toy );
-//                        context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
-//                        context.stroke();
-//                      }
-
-//                      onPaint: {
-//                        // Get the canvas context
-//                        var ctx = getContext("2d");
-//                        ctx.reset()
-//                        arrow(ctx, displayMap.press.x, displayMap.press.y, ma.mouseX, ma.mouseY)
-//                      }
-//                    }
-
-//                    Image{
-//                        id: displayMapImage1
-//                        anchors.fill: parent
-//                        fillMode: Image.Stretch
-//                        asynchronous: true
-//                        visible: displayMap.imageVisible === 1
-//                    }
-//                    Image{
-//                        id: displayMapImage2
-//                        anchors.fill: parent
-//                        fillMode: Image.Stretch
-//                        asynchronous: true
-//                        visible: displayMap.imageVisible === 2
-//                    }
-
-//                    function setSource(source){
-//                        var imageNew = imageVisible === 1 ? displayMapImage2 : displayMapImage1;
-//                        var imageOld = imageVisible === 2 ? displayMapImage2 : displayMapImage1;
-
-//                        imageNew.source = source;
-
-//                        function finishImage(){
-//                            if(imageNew.status === Component.Ready) {
-//                                imageNew.statusChanged.disconnect(finishImage);
-//                                imageVisible = imageVisible === 1 ? 2 : 1;
-//                            }
-//                        }
-
-//                        if (imageNew.status === Component.Loading){
-//                            imageNew.statusChanged.connect(finishImage);
-//                        }
-//                        else {
-//                            finishImage();
-//                        }
-//                    }
-
-//                    Connections {
-//                        target: imgProvider
-//                        function onNewMap(num: uint){
-//                            displayMap.setSource("image://service/map" + num)
-//                        }
-//                    }
-//                    PinchHandler {
-//                        id: pinch
-//                        target: displayMap
-//                        minimumPointCount: 2
-//                        onActiveChanged: () => {
-//                                             if(pinch.active){
-//                                                 canvas.visible = false
-//                                             }
-//                                         }
-//                    }
-
-//                    MouseArea {
-//                        id: ma
-//                        anchors.fill: parent
-//                        enabled: !pinch.active
-//                        onPressed: (mouse)=> {
-//                            displayMap.press = Qt.point(mouse.x, mouse.y)
-//                            canvas.visible = true
-//                        }
-//                        onMouseXChanged: canvas.requestPaint()
-//                        onMouseYChanged: canvas.requestPaint()
-//                        onReleased: (mouse)=> {
-//                            server.uiDisplayMapMouseClick(displayMap.press, Qt.point(mouse.x, mouse.y), Qt.size(parent.width, parent.height))
-//                            canvas.visible = false
-//                        }
-//                    }
-//                }
             }
             ColumnLayout{
                 id: page1column2
@@ -388,12 +391,15 @@ ColumnLayout {
                 errorOutOfRange.opacity = 0
                 pointPleaseWait.opacity = 0
                 pages.currentIndex = 0
+                mainLayout.changeTitle()
             }
             function changeToConfirm() {
                 pages.currentIndex = 1
+                mainLayout.changeTitle()
             }
             function changeToGrasp() {
                 pages.currentIndex = 2
+                mainLayout.changeTitle()
             }
             RowLayout{
                 id: page2
@@ -405,10 +411,6 @@ ColumnLayout {
                     Layout.margins: 5
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    Label{
-                        Layout.alignment: Qt.AlignHCenter
-                        text: qsTr("Please select Object")
-                    }
                     ImageLoader {
                         id: cameraFeed1
                         Layout.fillHeight: true
@@ -582,6 +584,7 @@ ColumnLayout {
                     target: server
                     function onUiChangeToConfirmObject() {
                         pages.changeToConfirm()
+                        server.setVertical()
                     }
                 }
 
@@ -589,10 +592,6 @@ ColumnLayout {
                     id: page3column1
                     Layout.fillHeight: true
                     Layout.margins: 5
-                    Label{
-                        Layout.alignment: Qt.AlignHCenter
-                        text: qsTr("Is this the correct object?")
-                    }
                     Rectangle{
                         id: objectFeed
                         Layout.fillHeight: true
@@ -650,15 +649,53 @@ ColumnLayout {
                         }
                     }
                 }
+                ColumnLayout {
+                    Layout.fillHeight: true
+                    Layout.maximumWidth: parent.width / 4
+                    Pane {
+                        Layout.fillWidth: true
+                        Label {
+                            anchors.centerIn: parent
+                            text: qsTr("Please Select Orientation")
+                        }
+                    }
+                    Button {
+                        id: verticalButton
+                        text: qsTr("Vertical")
+                        Material.background: Material.Green
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        onClicked: {
+                            verticalButton.Material.background = Material.Green
+                            horizontalButton.Material.background = Material.Gray
+                            server.setVertical()
+                        }
+                    }
+                    Button {
+                        id: horizontalButton
+                        text: qsTr("Horizontal")
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+                        onClicked: {
+                            Material.background = Material.Green
+                            verticalButton.Material.background = Material.Gray
+                            server.setHorizontal()
+                        }
+                    }
+                }
+
                 ColumnLayout{
                     id: page3column2
                     Layout.fillHeight: true
                     Layout.maximumWidth: parent.width / 4
                     Layout.alignment: Qt.AlignVCenter
                     Layout.rightMargin: 5
-                    Label{
-                        text: qsTr("Yes or No")
-                        Layout.alignment: Qt.AlignHCenter
+                    Pane {
+                        Layout.fillWidth: true
+                        Label{
+                            text: qsTr("Yes or No")
+                            anchors.centerIn: parent
+                        }
                     }
                     Button {
                         text: qsTr("Yes")
@@ -692,10 +729,6 @@ ColumnLayout {
                     Layout.fillHeight: true
                     Layout.preferredWidth: parent.width / 2
                     Layout.margins: 5
-                    Label{
-                        Layout.alignment: Qt.AlignHCenter
-                        text: qsTr("Stretch Grasping")
-                    }
                     ImageLoader {
                         id: cameraFeed2
                         Layout.fillHeight: true

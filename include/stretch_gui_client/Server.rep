@@ -6,6 +6,7 @@
 class Server {
   PROP(int pageNumber_)
   PROP(bool hasObject_)
+  PROP(bool canNavigate_)
 
   // Main Pages
 
@@ -39,6 +40,9 @@ class Server {
   SIGNAL(uiChangeToConfirmObject())
 
   // Confirm Object Page
+
+  SLOT(void setVertical())
+  SLOT(void setHorizontal())
 
   SLOT(void uiConfirmButtonNoClicked())
   SLOT(void uiConfirmButtonYesClicked())
