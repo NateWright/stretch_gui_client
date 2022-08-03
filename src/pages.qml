@@ -596,55 +596,21 @@ ColumnLayout {
                         id: objectFeed
                         Layout.fillHeight: true
                         Layout.fillWidth: true
-                        property var press
-                        property int imageVisible: 1
-                        property string initialSource
-                        property int fillmode: Image.PreserveAspectFit
 
                         color: "transparent"
 
                         Image{
-                            id: objectFeedImage1
+                            id: objectFeedImage
                             anchors.fill: parent
-                            fillMode: objectFeed.fillmode
+                            fillMode: Image.PreserveAspectFit
                             asynchronous: true
-                            visible: objectFeed.imageVisible === 1
                             horizontalAlignment: Image.AlignLeft
-                        }
-                        Image{
-                            id: objectFeedImage2
-                            anchors.fill: parent
-                            fillMode: objectFeed.fillmode
-                            asynchronous: true
-                            visible: objectFeed.imageVisible === 2
-                            horizontalAlignment: Image.AlignLeft
-                        }
-
-                        function setSource(source){
-                            var imageNew = imageVisible === 1 ? objectFeedImage2 : objectFeedImage1;
-                            var imageOld = imageVisible === 2 ? objectFeedImage2 : objectFeedImage1;
-
-                            imageNew.source = source;
-
-                            function finishImage(){
-                                if(imageNew.status === Component.Ready) {
-                                    imageNew.statusChanged.disconnect(finishImage);
-                                    imageVisible = imageVisible === 1 ? 2 : 1;
-                                }
-                            }
-
-                            if (imageNew.status === Component.Loading){
-                                imageNew.statusChanged.connect(finishImage);
-                            }
-                            else {
-                                finishImage();
-                            }
                         }
 
                         Connections {
                             target: imgProvider
                             function onNewObjectFeed(num: uint){
-                                objectFeed.setSource("image://service/objectFeed" + num)
+                                objectFeedImage.source = "image://service/objectFeed" + num;
                             }
                         }
                     }
@@ -715,6 +681,7 @@ ColumnLayout {
                         onClicked: {
                             server.uiConfirmButtonNoClicked();
                             pages.changeToObjectSelection()
+                            objectFeedImage.source = "";
                         }
                     }
                 }
