@@ -242,6 +242,28 @@ ColumnLayout {
                         x: map.robotPoint.x * (map.paintedWidth / map.sourceWidth)
                         y: map.robotPoint.y * (map.paintedHeight / map.sourceHeight)
                         rotation: -(map.robotRotation * 180 / Math.PI) - 90
+
+                        function updatePosition() {
+                            robot.x = map.robotPoint.x * (map.paintedWidth / map.sourceWidth)
+                            robot.y = map.robotPoint.y * (map.paintedHeight / map.sourceHeight)
+                            robot.rotation = -(map.robotRotation * 180 / Math.PI) - 90
+                        }
+
+                        Connections {
+                            target: map
+                            function onRobotPointChanged() {
+                                robot.updatePosition()
+                            }
+                            function onRobotRotationChanged() {
+                                robot.updatePosition()
+                            }
+                            function onSourceWidthChanged() {
+                                robot.updatePosition()
+                            }
+                            function onSourceHeightChanged() {
+                                robot.updatePosition()
+                            }
+                        }
                     }
 
                     Connections {
