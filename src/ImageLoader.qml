@@ -46,7 +46,7 @@ Rectangle{
                 imageVisible = imageVisible === 1 ? 2 : 1;
                 imageOld.source = ""
 
-                if(sourceWidth !== imageNew.sourceSize.width){
+                if(sourceWidth !== imageNew.sourceSize.width || sourceHeight !== imageNew.sourceSize.height){
                     sourceWidth = imageNew.sourceSize.width
                     sourceHeight = imageNew.sourceSize.height
                 }
