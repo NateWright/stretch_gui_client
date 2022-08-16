@@ -18,7 +18,10 @@ void Client::initiateServer(QString url) {
 }
 
 void Client::initConnections() {
-    connect(server_.data(), &ServerReplica::stateChanged, this, [this](auto info) {if(info == QRemoteObjectReplica::Suspect){ emit disconnected();} });
+    connect(server_.data(), &ServerReplica::stateChanged, this, [this](auto info) {if(info == QRemoteObjectReplica::Suspect){
+            emit disconnected();
+//            server_.clear();
+        } });
     // Page 1
 
     // Page 3

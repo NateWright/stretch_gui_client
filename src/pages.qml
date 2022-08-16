@@ -753,6 +753,8 @@ ColumnLayout {
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignRight
                     Layout.rightMargin: 5
+                    property bool backVisible: true
+
                     GridLayout {
                         columns: 2
                         Button {
@@ -760,8 +762,10 @@ ColumnLayout {
                             Material.background: Material.Green
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+                            enabled: server.hasObject_;
                             onClicked: {
                                 server.uiButtonReplaceObjectClicked()
+                                page4column2.backVisible = false;
                             }
                         }
                         Button {
@@ -769,6 +773,7 @@ ColumnLayout {
                                 Material.background: Material.Green
                                 Layout.fillHeight: true
                                 Layout.fillWidth: true
+                                enabled: !server.hasObject_;
                                 onClicked: {
                                     server.uiButtonStowObjectClicked()
                                 }
@@ -778,11 +783,26 @@ ColumnLayout {
                             Material.background: Material.Green
                             Layout.fillHeight: true
                             Layout.fillWidth: true
+                            enabled: server.hasObject_;
                             onClicked: {
                                 server.uiButtonReleaseClicked()
+                                page4column2.backVisible = true;
                             }
                         }
                     }
+                    Button {
+                        Layout.alignment: Qt.AlignHCenter
+                        text: qsTr("STOP OPERATION")
+                        Material.background: Material.Red
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        visible: !page4column2.backVisible
+                        onClicked: {
+                            server.uiButtonStopReplaceClicked()
+                            page4column2.backVisible = true;
+                        }
+                    }
+
                     Button {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTr("Back")
@@ -790,6 +810,7 @@ ColumnLayout {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                         enabled: !server.hasObject_;
+                        visible: page4column2.backVisible
                         onClicked: {
                             server.uiButtonBackClicked()
                             pages.changeToObjectSelection()
