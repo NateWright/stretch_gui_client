@@ -755,6 +755,15 @@ ColumnLayout {
                     Layout.rightMargin: 5
                     property bool backVisible: true
 
+                    Connections{
+                        target: server
+                        function onHasObject_Changed(){
+                            if(server.hasObject_ === false){
+                                page4column2.backVisible = true
+                            }
+                        }
+                    }
+
                     GridLayout {
                         columns: 2
                         Button {
@@ -809,7 +818,7 @@ ColumnLayout {
                         Material.background: Material.Red
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        enabled: !server.hasObject_;
+                        enabled: !server.hasObject_
                         visible: page4column2.backVisible
                         onClicked: {
                             server.uiButtonBackClicked()
