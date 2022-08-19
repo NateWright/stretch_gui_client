@@ -796,6 +796,7 @@ ColumnLayout {
                             onClicked: {
                                 server.uiButtonReleaseClicked()
                                 page4column2.backVisible = true;
+                                pages.changeToObjectSelection()
                             }
                         }
                     }
