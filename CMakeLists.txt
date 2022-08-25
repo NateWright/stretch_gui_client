@@ -32,7 +32,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_qml_module(stretch_gui_client
     URI test
     VERSION 1.0
-    QML_FILES src/main.qml src/start.qml src/pages.qml src/ImageLoader.qml
+    QML_FILES src/main.qml src/start.qml src/pages.qml src/ImageLoader.qml src/CameraPage.qml src/MapPage.qml src/GraspPage.qml
 )
 # Define target properties for Android with Qt 6 as:
     set_property(TARGET stretch_gui_client APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

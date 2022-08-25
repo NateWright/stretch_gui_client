@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>src/img/stretch-pixel-art.png</file>
+        <file>src/CameraPage.qml</file>
+        <file>src/MapPage.qml</file>
+        <file>src/GraspPage.qml</file>
     </qresource>
 </RCC>

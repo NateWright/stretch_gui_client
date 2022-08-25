@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 Rectangle{
     id: imageLoader
@@ -9,9 +9,11 @@ Rectangle{
     property int paintedHeight: displayImage1.paintedHeight
     property int sourceWidth: 0
     property int sourceHeight: 0
+    property int positionX: 0
+    property int positionY: 50
     property bool pause: false
 
-    color: "transparent"
+    color: "red"
 
     signal done()
 
@@ -49,6 +51,8 @@ Rectangle{
                 if(sourceWidth !== imageNew.sourceSize.width || sourceHeight !== imageNew.sourceSize.height){
                     sourceWidth = imageNew.sourceSize.width
                     sourceHeight = imageNew.sourceSize.height
+                    positionX = imageNew.x
+                    positionY = imageNew.y
                 }
 
                 done()
@@ -62,6 +66,7 @@ Rectangle{
             finishImage();
         }
     }
+
     Component.onCompleted: setSource(initialSource)
     Connections {
         target: imageLoader
@@ -72,11 +77,11 @@ Rectangle{
         }
     }
 
-    function pauseFeed() {
-        pause = true
-    }
-    function unpauseFeed() {
-        pause = false
-        imageLoader.setSource(initialSource)
+    Connections {
+        function onPauseChanged() {
+            if(!pause){
+                imageLoader.setSource(initialSource)
+            }
+        }
     }
 }
