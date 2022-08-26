@@ -13,7 +13,6 @@ ColumnLayout {
             text: qsTr("Camera")
             onClicked: () => {
                            mainLayout.currentIndex = 0
-                           mainLayout.changeTitle()
                        }
         }
         Button {
@@ -22,7 +21,6 @@ ColumnLayout {
             onClicked: () => {
                            mainLayout.currentIndex = 1
                            server.changeToNavigation()
-                           mainLayout.changeTitle()
                        }
             enabled: server.canNavigate_
         }
@@ -32,13 +30,26 @@ ColumnLayout {
             onClicked: () => {
                            mainLayout.currentIndex = 2
                            server.uiGrasp()
-                           mainLayout.changeTitle()
                        }
             Connections {
                 target: server
                 function onUiPleaseWaitSetVisible(b: Boolean){
                     graspButton.enabled = !b
                 }
+            }
+        }
+        Button {
+            id: placeButton
+            text: qsTr("Place")
+//            onClicked: () => {
+//                           mainLayout.currentIndex = 2
+//                           server.uiGrasp()
+//                       }
+            Connections {
+                target: server
+//                function onUiPleaseWaitSetVisible(b: Boolean){
+//                    graspButton.enabled = !b
+//                }
             }
         }
         Item {
@@ -56,35 +67,8 @@ ColumnLayout {
         currentIndex: 1
 
         Component.onCompleted: server.changeToNavigation()
-        function changeTitle() {
-            switch(mainLayout.currentIndex){
-            case 0: {
-                info.text = qsTr("")
-                break
-            }
-            case 1: {
-                info.text = qsTr("Click and Drag to Move Stretch")
-                break
-            }
-            case 2: {
-                switch(pages.currentIndex){
-                case 0: {
-                    info.text = qsTr("Please select Object")
-                    break
-                }
-                case 1: {
-                    info.text = qsTr("Is this the correct object?")
-                    break
-                }
-                case 2: {
-                    info.text = qsTr("Stretch Grasping")
-                    break
-                }
-                }
-                break
-            }
-
-            }
+        function changeTitle(newText) {
+            info.text = newText
         }
 
 
@@ -94,6 +78,15 @@ ColumnLayout {
 
             cameraPause: mainLayout.currentIndex !== 0
             ip: appWindow.ip
+
+            Connections {
+                target: mainLayout
+                function onCurrentIndexChanged() {
+                                           if(mainLayout.currentIndex === 0){
+                                                mainLayout.changeTitle(qsTr("Camera Feed"))
+                                           }
+                                       }
+            }
         }
 
 
@@ -103,6 +96,15 @@ ColumnLayout {
 
             cameraPause: mainLayout.currentIndex !== 1
             ip: appWindow.ip
+
+            Connections {
+                target: mainLayout
+                function onCurrentIndexChanged(){
+                                           if(mainLayout.currentIndex === 1){
+                                                mainLayout.changeTitle(qsTr("Click and Drag to Move Stretch"))
+                                           }
+                                       }
+            }
         }
 
         // Grasp
@@ -111,6 +113,20 @@ ColumnLayout {
 
             cameraPause: mainLayout.currentIndex !== 2
             ip: appWindow.ip
+
+            Connections{
+                target: mainLayout
+                function onCurrentIndexChanged(){
+                                           if(mainLayout.currentIndex === 2){
+                                                mainLayout.changeTitle(graspPage.title)
+                                           }
+                                       }
+            }
+            Connections{
+                function onTitleChanged(){
+                    mainLayout.changeTitle(graspPage.title)
+                }
+            }
         }
 
 

@@ -8,17 +8,12 @@ StackLayout{
 
     property string ip
     property bool cameraPause
-
-    signal updateTitle(title: string);
+    property var title
 
     Layout.fillHeight: true
     Layout.fillWidth: true
 
     Component.onCompleted: changePage()
-
-    function callUpdateTitle(title: string){
-        updateTitle(title);
-    }
 
     function changePage() {
         switch (server.pageNumber_){
@@ -42,15 +37,15 @@ StackLayout{
         errorOutOfRange.opacity = 0
         pointPleaseWait.opacity = 0
         graspPages.currentIndex = 0
-        callUpdateTitle("")
+        title = qsTr("Please select Object")
     }
     function changeToConfirm() {
         graspPages.currentIndex = 1
-        callUpdateTitle("")
+        title = qsTr("Is this the correct object?")
     }
     function changeToGrasp() {
         graspPages.currentIndex = 2
-        callUpdateTitle("")
+        title = qsTr("Stretch Grasping")
     }
     RowLayout{
         id: page2
@@ -72,9 +67,12 @@ StackLayout{
                     anchors.fill: parent
 
                     onClicked: (mouse)=> {
-                                   errorNanPoint.opacity = 0
-                                   errorOutOfRange.opacity = 0
-                                   server.uiDisplayCameraMouseClicked(Qt.point(mouse.x, mouse.y - (cameraFeed1.height - cameraFeed1.paintedHeight)/2), Qt.point(mouse.x, mouse.y - (cameraFeed1.height - cameraFeed1.paintedHeight)/2), Qt.size(cameraFeed1.paintedWidth, cameraFeed1.paintedHeight))
+                                   var spacing = (cameraFeed1.height - cameraFeed1.paintedHeight)/2
+                                   if(mouse.y > spacing && mouse.y <= cameraFeed1.paintedHeight + spacing){
+                                       errorNanPoint.opacity = 0
+                                       errorOutOfRange.opacity = 0
+                                       server.uiDisplayCameraMouseClicked(Qt.point(mouse.x, mouse.y - spacing), Qt.point(0,0), Qt.size(cameraFeed1.paintedWidth, cameraFeed1.paintedHeight))
+                                   }
                                }
                 }
             }

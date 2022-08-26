@@ -13,7 +13,7 @@ Rectangle{
     property int positionY: 50
     property bool pause: false
 
-    color: "red"
+    color: "transparent"
 
     signal done()
 
